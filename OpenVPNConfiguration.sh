@@ -10,8 +10,8 @@
 # assumes you have setup your OpenVPN server following the Digital Ocean OpenVPN guide.
 
 #=============== VARIABLES ===============
-EASYRSADIR=/home/user/easy-rsa
-CLIENTCONFIGDIR=/home/user/client-configs
+EASYRSADIR=$USER/easy-rsa
+CLIENTCONFIGDIR=$USER/client-configs
 serverIP=127.0.0.1
 
 # Text Colors
