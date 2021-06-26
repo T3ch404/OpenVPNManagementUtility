@@ -112,6 +112,9 @@ while true; do
 	fi
 done
 
+echo "Enter the username for the VPN server"
+read -p $prompt CAUser
+
 while true; do
 	echo -e "\n\n${BLUE}===================== Main Menu =====================${NC}"
 	echo "(1) Create new client configuration file"
@@ -137,8 +140,6 @@ while true; do
 			# Create new client key and certificate request
 			$EASYRSADIR/easyrsa gen-req $username nopass
 			cp $EASYRSADIR/pki/private/$username.key $CLIENTCONFIGDIR/keys
-
-			read -p "Enter the username for the VPN server:" CAUser
 
 			# Copy client certificate to CA server
 			secureCopyToCA
@@ -186,8 +187,6 @@ while true; do
 							echo -e "${RED}FILE MISSING ERROR - $EASYRSADIR/pki/reqs/$username.req does not exist!${NC}"
 							exit 3
 						fi
-
-						read -p "Enter the username for the VPN server:" CAUser
 
 						# Copy client certificate to CA server.
 						secureCopyToCA

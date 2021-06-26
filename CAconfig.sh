@@ -62,6 +62,9 @@ while true; do
 	fi
 done
 
+echo "Enter the username for the VPN server"
+read -p $prompt VPNUser
+
 while true; do
 	echo -e "\n\n${BLUE}===================== Main Menu =====================${NC}"
 	echo "(1) Sign a certificate for new client"
@@ -92,8 +95,6 @@ while true; do
 			$EASYRSADIR/easyrsa import-req /tmp/$Username.req $Username
 			$EASYRSADIR/easyrsa sign-req client $Username
 
-			read -p "Enter the username for the VPN server:" VPNUser
-
 			# Copy signed client certificate back to the VPN server.
 			scp $EASYRSADIR/pki/issued/$Username.crt $VPNUser@${serverIP}:/tmp
 			if [ $? -ne 0 ]; then
@@ -118,8 +119,6 @@ while true; do
 			$EASYRSADIR/easyrsa revoke $Username
 			$EASYRSADIR/easyrsa gen-crl
 
-			read -p "Enter the username for the VPN server:" VPNUser
-
 			# Copy the new crl.pem file to the VPN server.
 			scp $EASYRSADIR/pki/crl.pem $VPNUser@${serverIP}:/tmp
 			if [ $? -ne 0 ]; then
@@ -139,8 +138,6 @@ while true; do
 					# Get the same username used to sign the certificate.
 					echo "Please enter the Username that your are creating a certificate for"
 					read -p $prompt Username
-
-					read -p "Enter the username for the VPN server:" VPNUser
 
 					# Copy signed client certificate back to the VPN server.
 					scp $EASYRSADIR/pki/issued/$Username.crt $VPNUser@192.168.1.210:/tmp
