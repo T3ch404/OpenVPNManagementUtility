@@ -14,6 +14,8 @@ EASYRSADIR=../easy-rsa
 CLIENTCONFIGDIR=../client-configs
 serverIP=127.0.0.1
 
+CAUser=user
+
 # Text Colors
 NC='\033[0m'
 RED='\033[0;31m'
@@ -58,7 +60,7 @@ function createOVPN {
 
 function secureCopyToCA() {
 	# Copy certificate request to CA server and check to make sure the transfer was successful
-	scp $EASYRSADIR/pki/reqs/$username.req $VPNUser@$serverIP:/tmp
+	scp $EASYRSADIR/pki/reqs/$username.req $CAUser@$serverIP:/tmp
 	if [ $? -ne 0 ]; then
 		echo -e "${RED}SECURE COPY ERROR - Secure copy failed to send $EASYRSADIR/pki/reqs/$Username.req to CA Server.${NC}"
 		exit 1
@@ -136,7 +138,7 @@ while true; do
 			$EASYRSADIR/easyrsa gen-req $username nopass
 			cp $EASYRSADIR/pki/private/$username.key $CLIENTCONFIGDIR/keys
 
-			read -p "Enter the username for the VPN server:" VPNUser
+			read -p "Enter the username for the VPN server:" CAUser
 
 			# Copy client certificate to CA server
 			secureCopyToCA
@@ -185,7 +187,7 @@ while true; do
 							exit 3
 						fi
 
-						read -p "Enter the username for the VPN server:" VPNUser
+						read -p "Enter the username for the VPN server:" CAUser
 
 						# Copy client certificate to CA server.
 						secureCopyToCA
