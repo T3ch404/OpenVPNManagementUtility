@@ -3,14 +3,14 @@
 # Name:     CAconfig.sh
 # Author:   Noah DaMetz
 # Created:  04/01/2021
-# Modified: 04/05/2021
+# Modified: 06/26/2021
 
 # The purpose of this script is to simplify the process of creating
 # and revoking certificates to be used with an OpenVPN server. This script
 # assumes you have setup your OpenVPN server following the Digital Ocean OpenVPN guide.
 
 # =============== VARIABLES ===============
-EASYRSADIR=$HOME/easy-rsa
+EASYRSADIR=../easy-rsa
 serverIP=127.0.0.1
 
 # Text Colors
