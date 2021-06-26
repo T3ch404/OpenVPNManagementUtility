@@ -58,7 +58,7 @@ function createOVPN {
 
 function secureCopyToCA() {
 	# Copy certificate request to CA server and check to make sure the transfer was successful
-	scp $EASYRSADIR/pki/reqs/$username.req user@$serverIP:/tmp
+	scp $EASYRSADIR/pki/reqs/$username.req $VPNUser@$serverIP:/tmp
 	if [ $? -ne 0 ]; then
 		echo -e "${RED}SECURE COPY ERROR - Secure copy failed to send $EASYRSADIR/pki/reqs/$Username.req to CA Server.${NC}"
 		exit 1
@@ -136,6 +136,8 @@ while true; do
 			$EASYRSADIR/easyrsa gen-req $username nopass
 			cp $EASYRSADIR/pki/private/$username.key $CLIENTCONFIGDIR/keys
 
+			read -p "Enter the username for the VPN server:" VPNUser
+
 			# Copy client certificate to CA server
 			secureCopyToCA
 
@@ -182,6 +184,8 @@ while true; do
 							echo -e "${RED}FILE MISSING ERROR - $EASYRSADIR/pki/reqs/$username.req does not exist!${NC}"
 							exit 3
 						fi
+
+						read -p "Enter the username for the VPN server:" VPNUser
 
 						# Copy client certificate to CA server.
 						secureCopyToCA

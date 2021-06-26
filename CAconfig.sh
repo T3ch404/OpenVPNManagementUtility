@@ -13,6 +13,8 @@
 EASYRSADIR=../easy-rsa
 serverIP=127.0.0.1
 
+VPNUser=user
+
 # Text Colors
 NC='\033[0m'
 RED='\033[0;31m'
@@ -90,8 +92,10 @@ while true; do
 			$EASYRSADIR/easyrsa import-req /tmp/$Username.req $Username
 			$EASYRSADIR/easyrsa sign-req client $Username
 
+			read -p "Enter the username for the VPN server:" VPNUser
+
 			# Copy signed client certificate back to the VPN server.
-			scp $EASYRSADIR/pki/issued/$Username.crt user@${serverIP}:/tmp
+			scp $EASYRSADIR/pki/issued/$Username.crt $VPNUser@${serverIP}:/tmp
 			if [ $? -ne 0 ]; then
 				echo -e "${RED}SECURE COPY ERROR - Secure copy to VPN server failed.${NC}"
 				exit 3
@@ -114,8 +118,10 @@ while true; do
 			$EASYRSADIR/easyrsa revoke $Username
 			$EASYRSADIR/easyrsa gen-crl
 
+			read -p "Enter the username for the VPN server:" VPNUser
+
 			# Copy the new crl.pem file to the VPN server.
-			scp $EASYRSADIR/pki/crl.pem user@${serverIP}:/tmp
+			scp $EASYRSADIR/pki/crl.pem $VPNUser@${serverIP}:/tmp
 			if [ $? -ne 0 ]; then
 				echo -e "${RED}SECURE COPY ERROR - Secure copy to VPN server failed.${NC}"
 			fi
@@ -134,8 +140,10 @@ while true; do
 					echo "Please enter the Username that your are creating a certificate for"
 					read -p $prompt Username
 
+					read -p "Enter the username for the VPN server:" VPNUser
+
 					# Copy signed client certificate back to the VPN server.
-					scp $EASYRSADIR/pki/issued/$Username.crt user@192.168.1.210:/tmp
+					scp $EASYRSADIR/pki/issued/$Username.crt $VPNUser@192.168.1.210:/tmp
 					if [ $? -ne 0 ]; then
 						echo "SECURE COPY ERROR - Secure copy to VPN server failed."
 						exit 3
